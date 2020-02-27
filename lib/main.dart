@@ -35,6 +35,8 @@ class HomeState extends HomePage {
   String id = '@HimeMiyaTen';
   List<String> Titles = [
     '雨宮天「PARADOX」リリースイベント＆スタンプ会',
+    '雨宮天 ライブイベントLoppi・HMVにてオフィシャルグッズ事後発売決定！',
+    '夏川椎菜　417Pとヒヨコ群の夢',
     '夏川椎菜　初のライブブルーレイ 発売日・仕様決定！',
     '麻倉もも Live Tour 2020 "Agapanthus"',
   ];

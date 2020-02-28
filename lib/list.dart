@@ -13,21 +13,26 @@ class CountyList extends StatelessWidget {
           return
             new Card(
               child: new Container(
-                child: new Center(
-                    child: new Column(
-                      // Stretch the cards in horizontal axis
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                padding: EdgeInsets.all(8.0),
+                    child: new Flex(
+                      direction: Axis.horizontal,
                       children: <Widget>[
+                      new CircleAvatar(child: new Text(news[index].title[0]),),
+                      new Padding(padding: EdgeInsets.only(right: 10.0),),
+                        Expanded(
+                        child:
                         new Text(
                           // Read the name field value and set it in the Text widget
                           news[index].title,
                           // set some style to text
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: new TextStyle(
-                              fontSize: 20.0, color: Colors.lightBlueAccent),
+                              fontSize: 18, color: Colors.lightBlueAccent),
+                        ),
                         ),
                       ],
-                    )),
-                padding: const EdgeInsets.all(15.0),
+                    )
               ),
             );
         });

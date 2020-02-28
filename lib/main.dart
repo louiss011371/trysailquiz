@@ -2,23 +2,71 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'customBottomNavigationBarWidget.dart';
-import 'news.dart';
+//import 'news.dart';
+import 'drawerList.dart';
+import 'package:http/http.dart' as http;
+import 'model/news.dart';
+import 'list.dart';
+import 'dart:convert';
 import 'dart:async';
 
 //import 'package:firebase/firebase.dart' as fb;
 
-void main() => runApp(MyApp());
+void main() => runApp(SampleApp());
+var APP_BAR = 'TrySail News';
+var WEBSITE_HEADER = 'TrySail News Website';
+var VERSION = "2.0";
 
-var appTitle = 'TrySail Info';
-
-class MyApp extends StatelessWidget {
+class SampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(debugShowCheckedModeBanner: false, home: new HomePage());
+    return MaterialApp(
+      title: WEBSITE_HEADER,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: HomePage(),
+    );
   }
 }
 
+class GetJsonData extends StatefulWidget {
+  @override
+  _GetJsonDataState createState() => new _GetJsonDataState();
+}
+
+class _GetJsonDataState extends State<GetJsonData> {
+  List data;
+
+  @override
+  Widget build(BuildContext context) {
+    return new Scaffold(
+        body: new Container(
+          child: new Center(
+            // Use future builder and DefaultAssetBundle to load the local JSON file
+            child: new FutureBuilder(
+                future: DefaultAssetBundle.of(context)
+                    .loadString('assets/json/news.json'),
+                builder: (context, snapshot) {
+                  List<News> news =
+                  parseJson(snapshot.data.toString());
+                  return news.isNotEmpty
+                      ? new CountyList(news: news)
+                      : new Center(child: new CircularProgressIndicator());
+                }),
+          ),
+        ));
+  }
+
+  List<News> parseJson(String response) {
+    if(response==null){
+      return [];
+    }
+    final parsed =
+    json.decode(response.toString()).cast<Map<String, dynamic>>();
+    return parsed.map<News>((json) => new News.fromJson(json)).toList();
+  }
+}
 
 class HomePage extends StatelessWidget {
   @override
@@ -33,20 +81,13 @@ class HomeState extends HomePage {
   int following = 644;
   String userName = 'ルイス＠そらちゃん一推し';
   String id = '@HimeMiyaTen';
-  List<String> Titles = [
-    '雨宮天「PARADOX」リリースイベント＆スタンプ会',
-    '雨宮天 ライブイベントLoppi・HMVにてオフィシャルグッズ事後発売決定！',
-    '夏川椎菜　417Pとヒヨコ群の夢',
-    '夏川椎菜　初のライブブルーレイ 発売日・仕様決定！',
-    '麻倉もも Live Tour 2020 "Agapanthus"',
-  ];
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return new SafeArea(
       child: Scaffold(
-        appBar: AppBar(title: Text(appTitle)),
+        appBar: AppBar(title: Text(APP_BAR + "  " + VERSION)),
         drawer: new Drawer(
           child: new ListView(
             physics: const NeverScrollableScrollPhysics(),
@@ -59,7 +100,7 @@ class HomeState extends HomePage {
                     children: <Widget>[
                       new ListTile(
                         dense: true,
-                  
+
                       ),
                       new ListTile(
                         dense: true,
@@ -91,14 +132,8 @@ class HomeState extends HomePage {
             ],
           ),
         ),
-        body: new Container(
-          child: new ListView.builder(
-              itemBuilder: (_, int index) => GestureDetector(
-                  child: NewsList(
-                    this.Titles[index],
-                  ),
-                  onTap: () => print(this.Titles[index])),
-              itemCount: Titles.length),
+        body: Center(
+          child: GetJsonData(),
         ),
         bottomNavigationBar: CustomBottomNavigationBarWidget(),
       ),
@@ -106,34 +141,4 @@ class HomeState extends HomePage {
   }
 }
 
-class DrawerListItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return new Column(
-      children: <Widget>[
-        new ListTile(
-          leading: Icon(Icons.person),
-          title: Text('プロフィール'),
-        ),
-        new ListTile(
-          leading: Icon(Icons.featured_play_list),
-          title: Text('リスト'),
-        ),
-        new ListTile(
-          leading: Icon(Icons.bookmark),
-          title: Text('ブックマーク'),
-        ),
-        new ListTile(
-          leading: Icon(Icons.show_chart),
-          title: Text('モーメント'),
-        ),
-        new ListTile(
-          leading: Icon(Icons.unarchive),
-          title: Text('Twitter広告'),
-        )
-      ],
-    );
-  }
-}
 

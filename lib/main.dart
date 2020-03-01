@@ -1,16 +1,11 @@
-// import 'package:flutter/cupertino.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'customBottomNavigationBarWidget.dart';
-//import 'news.dart';
 import 'drawerList.dart';
-import 'package:http/http.dart' as http;
 import 'model/news.dart';
 import 'list.dart';
 import 'dart:convert';
-import 'dart:async';
-
-//import 'package:firebase/firebase.dart' as fb;
 
 void main() => runApp(SampleApp());
 var APP_BAR = 'TrySail News';

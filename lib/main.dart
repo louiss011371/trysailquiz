@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'splash.dart';
 import 'package:flutter/rendering.dart';
 
 void main() => runApp(mainpage());
@@ -16,7 +16,7 @@ class mainpage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: homepage(),
+      home: splashscreen(),
     );
   }
 }

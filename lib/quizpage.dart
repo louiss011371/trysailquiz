@@ -58,6 +58,13 @@ class _quizpageState extends State<quizpage> {
   Color right = Colors.green;
   Color wrong = Colors.red;
   int marks = 0;
+  int i = 1;
+  // extra varibale to iterate
+  int j = 1;
+  int timer = 30;
+  String showtimer = "30"+ "s";
+
+  bool canceltimer = false;
 
   Map<String, Color> btncolor = {
     "a": Colors.indigoAccent,
@@ -67,7 +74,7 @@ class _quizpageState extends State<quizpage> {
   };
 
   void checkanswer(String k) {
-    if( mydata[2]["1"] == mydata[1]["1"][k] ){
+    if( mydata[2][i.toString()] == mydata[1][i.toString()][k] ){
         marks = marks + 10;
         colortoshow = right;
      }else  {
@@ -76,15 +83,9 @@ class _quizpageState extends State<quizpage> {
     setState(() {
       btncolor[k] = colortoshow;
     });
+    Timer(Duration(seconds: 2), nextquestion);
     }
 
-  int i = 1;
-  // extra varibale to iterate
-  int j = 1;
-  int timer = 30;
-  String showtimer = "30";
-
-  bool canceltimer = false;
 
 //  @override
 //  void initState() {
@@ -116,7 +117,20 @@ class _quizpageState extends State<quizpage> {
 //      });
 //    });
 //}
-//
+
+  void nextquestion() {
+    setState(() {
+      if(i < 5 ){
+        i++;
+      }else{
+
+      }
+      btncolor["a"] = Colors.indigoAccent;
+      btncolor["b"] = Colors.indigoAccent;
+      btncolor["c"] = Colors.indigoAccent;
+      btncolor["d"] = Colors.indigoAccent;
+    });
+  }
 //  void nextquestion() {
 //    canceltimer = false;
 //    timer = 30;
@@ -167,7 +181,7 @@ class _quizpageState extends State<quizpage> {
       child: MaterialButton(
         onPressed: ()=> checkanswer(k),
         //  onPressed: () {},
-        child: Text (mydata[1]["1"][k],
+        child: Text (mydata[1][i.toString()][k],
         style: TextStyle(
           color: Colors.white,
           fontFamily: "Alike",
@@ -219,7 +233,7 @@ class _quizpageState extends State<quizpage> {
                   alignment: Alignment.bottomLeft,
                   child: Center(
                     child: Text(
-                      mydata[0]["1"],
+                      mydata[0][i.toString()],
                       style: TextStyle(
                         fontSize: 16.0,
                         fontFamily: "Quando",

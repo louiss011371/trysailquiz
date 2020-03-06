@@ -39,7 +39,7 @@ class _homepageState extends State<homepage> {
       ),
       child: GestureDetector(
         onTap:() {
-          Navigator.push(context,MaterialPageRoute(builder:(context) => quizpage()
+          Navigator.push(context,MaterialPageRoute(builder:(context) => getjson(name)
           ));
         },
       child: Material(

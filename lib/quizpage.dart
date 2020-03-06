@@ -57,13 +57,7 @@ class _quizpageState extends State<quizpage> {
   Color colortoshow = Colors.indigoAccent;
   Color right = Colors.green;
   Color wrong = Colors.red;
-
   int marks = 0;
-  int i = 1;
-  // extra varibale to iterate
-  int j = 1;
-  int timer = 30;
-  String showtimer = "30";
 
   Map<String, Color> btncolor = {
     "a": Colors.indigoAccent,
@@ -71,6 +65,24 @@ class _quizpageState extends State<quizpage> {
     "c": Colors.indigoAccent,
     "d": Colors.indigoAccent,
   };
+
+  void checkanswer(String k) {
+    if( mydata[2]["1"] == mydata[1]["1"][k] ){
+        marks = marks + 10;
+        colortoshow = right;
+     }else  {
+       colortoshow = wrong;
+    }
+    setState(() {
+      btncolor[k] = colortoshow;
+    });
+    }
+
+  int i = 1;
+  // extra varibale to iterate
+  int j = 1;
+  int timer = 30;
+  String showtimer = "30";
 
   bool canceltimer = false;
 
@@ -125,11 +137,6 @@ class _quizpageState extends State<quizpage> {
 //    starttimer();
 //  }
 
-//  void checkanswer(String k) {
-//    // in the previous version this was
-//    // mydata[2]["1"] == mydata[1]["1"][k]
-//    // which i forgot to change
-//    // so nake sure that this is now corrected
 //    if (mydata[2][i.toString()] == mydata[1][i.toString()][k]) {
 //      // just a print sattement to check the correct working
 //      // debugPrint(mydata[2][i.toString()] + " is equal to " + mydata[1][i.toString()][k]);
@@ -151,16 +158,16 @@ class _quizpageState extends State<quizpage> {
 // //   Timer(Duration(seconds: 1), nextquestion);
 //  }
 
-  Widget choicebutton() {
+  Widget choicebutton(String k) {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.0,
         horizontal: 29.0,
       ),
       child: MaterialButton(
-//        onPressed: ()=> checkanswer(k),
-          onPressed: () {},
-        child: Text ("option",
+        onPressed: ()=> checkanswer(k),
+        //  onPressed: () {},
+        child: Text (mydata[1]["1"][k],
         style: TextStyle(
           color: Colors.white,
           fontFamily: "Alike",
@@ -168,79 +175,89 @@ class _quizpageState extends State<quizpage> {
           ),
           maxLines: 1,
         ),
-        color: Colors.indigo,
+        color: btncolor[k],
         splashColor: Colors.indigo[700],
         minWidth: 200.0,
         height: 40.0,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: WEBSITE_HEADER,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: Scaffold(
-        appBar: AppBar(
-          title:  Text(
-            APP_BAR,
-            style: TextStyle(
-              fontFamily: "Quando",
+    return WillPopScope(
+      onWillPop: () {
+        return showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text("やりなおすことはできませんよ！"),
+          ),
+        );
+      },
+      child: MaterialApp(
+        title: WEBSITE_HEADER,
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        home: Scaffold(
+          appBar: AppBar(
+            title: Text(
+              APP_BAR,
+              style: TextStyle(
+                fontFamily: "Quando",
+              ),
             ),
           ),
-        ),
-        body: Column(
-          children: <Widget>[
-            Expanded(
-              flex: 3,
+          body: Column(
+            children: <Widget>[
+              Expanded(
+                flex: 3,
                 child: Container(
                   padding: EdgeInsets.all(15.0),
                   alignment: Alignment.bottomLeft,
                   child: Center(
-                  child: Text(
-                    mydata[0][i.toString()],
-                    style: TextStyle(
-                      fontSize: 16.0,
-                      fontFamily: "Quando",
+                    child: Text(
+                      mydata[0]["1"],
+                      style: TextStyle(
+                        fontSize: 16.0,
+                        fontFamily: "Quando",
+                      ),
                     ),
                   ),
                 ),
-                ),
-            ),
-            Expanded(
-             flex: 6,
-              child: Container(
-                child: Column(
+              ),
+              Expanded(
+                flex: 6,
+                child: Container(
+                    child: Column(
                   children: <Widget>[
-                    choicebutton(),
-                    choicebutton(),
-                    choicebutton(),
-                    choicebutton(),
+                    choicebutton('a'),
+                    choicebutton('b'),
+                    choicebutton('c'),
+                    choicebutton('d'),
                   ],
-                )
-                ),
+                )),
               ),
-            Expanded(
-            flex: 1,
-              child: Container(
-                alignment: Alignment.topCenter,
-                child: Center(
-                  child: Text(
-                    showtimer,
-                    style: TextStyle(
-                      fontSize: 35.0,
-                      fontWeight: FontWeight.w700,
-                      fontFamily: 'Timws New Roman',
+              Expanded(
+                flex: 1,
+                child: Container(
+                  alignment: Alignment.topCenter,
+                  child: Center(
+                    child: Text(
+                      showtimer,
+                      style: TextStyle(
+                        fontSize: 35.0,
+                        fontWeight: FontWeight.w700,
+                        fontFamily: 'Timws New Roman',
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

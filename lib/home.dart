@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trysailquiz/main.dart';
+import 'package:flutter/rendering.dart';
+import 'quizpage.dart';
 
 class homepage extends StatefulWidget {
   @override
@@ -35,6 +37,11 @@ class _homepageState extends State<homepage> {
         vertical: 20.0,
         horizontal: 30.0,
       ),
+      child: GestureDetector(
+        onTap:() {
+          Navigator.push(context,MaterialPageRoute(builder:(context) => quizpage()
+          ));
+        },
       child: Material(
         color: color,
         borderRadius: BorderRadius.circular(25.0),
@@ -82,6 +89,7 @@ class _homepageState extends State<homepage> {
           ),
         ),
       ),
+    ),
     );
   }
 
